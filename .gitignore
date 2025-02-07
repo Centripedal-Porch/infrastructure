@@ -1,0 +1,19 @@
+# Misc. and Best Practice
+**.swp
+**.swo
+**.log
+**.out
+**build*
+
+# Terraform
+**.tfstate
+**.tfstate.*
+**_override.tf
+**_override.tf.json
+**/.terraform
+**/.terraformrc
+**/crash.*.log
+**/crash.log
+**/override.tf
+**/override.tf.json
+**/terraform.rc
