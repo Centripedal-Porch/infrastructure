@@ -1,0 +1,41 @@
+---
+version: 2
+updates:
+  - package-ecosystem: 'gitsubmodule'                                           # git submodule
+    directory: '.'
+    rebase-strategy: 'auto'
+    reviewers: ['caseysparkz']
+    target-branch: 'main'
+    schedule:
+      interval: 'weekly'
+      day: 'friday'
+      time: '18:30'
+      timezone: 'America/Los_Angeles'
+    commit-message:
+      prefix: 'chore(gitsubmodule)'
+
+  - package-ecosystem: 'github-actions'                                         # github-actions
+    directory: '.github/workflows'
+    rebase-strategy: 'auto'
+    reviewers: ['caseysparkz']
+    target-branch: 'main'
+    schedule:
+      interval: 'weekly'
+      day: 'friday'
+      time: '18:30'
+      timezone: 'America/Los_Angeles'
+    commit-message:
+      prefix: 'chore(github_actions)'
+
+  - package-ecosystem: 'terraform'                                              # terraform
+    directory: '.'
+    rebase-strategy: 'auto'
+    reviewers: ['caseysparkz']
+    target-branch: 'main'
+    schedule:
+      interval: 'weekly'
+      day: 'friday'
+      time: '18:30'
+      timezone: 'America/Los_Angeles'
+    commit-message:
+      prefix: 'chore(terraform)'

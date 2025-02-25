@@ -1,0 +1,262 @@
+# Author:       Casey Sparks
+# Date:         February 25, 2025
+# Description:  Run `terraform validate` against new terraform configs.
+---
+name: 'Terraform'
+on:
+  pull_request:
+    branches: ['main']
+    paths:
+      - '**/*.hcl'
+      - '**/*.tf'
+      - '**/*.tftest.json'
+      - '**/*.tfvars'
+      - '**/*.tfvars.json'
+      - '**/.infracost_usage.yml'
+      - '.infracost.yml'
+# workflow_run:
+#   workflows: []
+#   types: ['completed']
+env:
+  TERRAFORM_DIR: './centripedalporch.com'
+  TF_LOG: 'trace'
+  TF_LOG_path: '/tmp/terraform.log'
+  TF_VAR_cloudflare_api_token: '${{ secrets.TF_VAR_CLOUDFLARE_API_TOKEN }}'
+  TF_VER: '1.10.5'                                                            # Increment to update Terraform
+jobs:
+  terraform_validate:
+    name: 'Terraform Validate'
+    runs-on: 'ubuntu-latest'
+    permissions:
+      contents: 'read'
+    defaults:
+      run:
+        working-directory: '{{ env.TERRAFORM_DIR }}'
+    steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683'  # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: 'Set up Terraform'
+        uses: 'hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd'  # v3.1.2
+        with:
+          terraform_version: '${{ env.TF_VER }}'
+
+      - name: 'Initialize Terraform'
+        run: 'terraform init -backend=false'
+
+      - name: 'Validate Terraform configs.'
+        run: 'terraform validate'
+
+  terraform_fmt:
+    name: 'Terraform Format'
+    if: '${{ github.event_name }} == "pull_request"'
+    runs-on: 'ubuntu-latest'
+    needs: ['terraform_validate']
+    permissions:
+      contents: 'write'
+    defaults:
+      run:
+        working-directory: '.'
+    steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683'  # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: 'Configure Terraform'
+        uses: 'hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd'  # v3.1.2
+        with:
+          terraform_version: '${{ env.TF_VER }}'
+
+      - name: 'terraform fmt'
+        run: 'terraform fmt -recursive'
+
+      - name: 'Import PGP identity'  #                                          So we can sign the commit.
+        id: 'import_pgp'
+        uses: 'crazy-max/ghaction-import-gpg@cb9bde2e2525e640591a934b1fd28eef1dcaf5e5'  # v6.2.0
+        with:
+          gpg_private_key: '${{ secrets.ORG_SIGNING_KEY }}'                   # TODO
+          passphrase: '${{ secrets.ORG_SIGNING_KEY_PASSPHRASE }}'
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: 'Auto-commit and push changes'
+        uses: 'stefanzweifel/git-auto-commit-action@e348103e9026cc0eee72ae06630dbe30c8bf7a79'  # v5.1.0
+        with:
+          commit_message: 'style(terraform): auto-formatted terraform files'
+          commit_author: '${{ steps.import_pgp.outputs.name }} <${{ steps.import_pgp.outputs.email }}>'
+          commit_user_email: '${{ steps.import_pgp.outputs.email }}'
+          commit_user_name: '${{ steps.import_pgp.outputs.name }}'
+          file_pattern: '**/*.tf'
+
+  infracost_check:
+    name: 'Remind user to update Infracost config and usage file.'
+    if: '${{ github.event_name }} == "pull_request"'
+    runs-on: 'ubuntu-latest'
+    needs: ['terraform_validate']
+    permissions:
+      contents: 'read'
+      pull-requests: 'write'
+    defaults:
+      run:
+        working-directory: '{{ env.TERRAFORM_DIR }}'
+    steps:
+      - name: 'Check out base branch'
+        uses: 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683'  # v4.2.2
+
+      - name: 'Get changed files'
+        id: 'changed_files'
+        uses: 'tj-actions/changed-files@dcc7a0cba800f454d79fff4b993e8c3555bcc0a8'  # v45.0.7
+
+      - name: 'Nag user to update Infracost usage file.'
+        if: "${{ !contains(join(steps.changed_files.outputs.all_changed_files, ','), '.infracost_usage.yml') }}"
+        env:
+          GITHUB_TOKEN: '${{ github.token }}'
+          MSG: ':warning: WARNING: Terraform files changed but Infracost config not updated :warning:'
+        run: 'gh pr comment ${{ github.event.pull_request.number }} --body ${{ env.MSG }}'
+
+  infracost_update_pr:
+    name: 'Infracost Pull Request Checks'
+    if: '${{ github.event_name }} == "pull_request"'
+    runs-on: 'ubuntu-latest'
+    needs: ['infracost_check']
+    permissions:
+      contents: 'read'
+      pull-requests: 'write'  #                                                 Required to post comments.
+    defaults:
+      run:
+        working-directory: '{{ env.TERRAFORM_DIR }}'
+    steps:
+      - name: 'Check out base branch'
+        uses: 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683'  # v4.2.2
+        with:
+          ref: '${{ github.event.pull_request.base.ref }}'
+          fetch-depth: 0
+
+      - name: 'Setup Infracost'
+        uses: 'infracost/actions/setup@e9d6e6cd65e168e76b0de50ff9957d2fe8bb1832'  # v3.0.1
+        with:
+          api-key: '${{ secrets.INFRACOST_API_KEY }}'
+
+      - name: 'Generate Infracost cost estimate baseline'  #                    Generate base branch cost.
+        run: >
+          infracost breakdown
+            --config-file .infracost.yml
+            --format json
+            --out-file /tmp/infracost-base.json
+
+      - name: 'Checkout PR branch'
+        uses: 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683'  # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: 'Generate Infracost diff'  #                                      Generate a cost diff.
+        run: >
+          infracost diff
+            --config-file .infracost.yml
+            --format json
+            --compare-to /tmp/infracost-base.json
+            --out-file /tmp/infracost.json
+
+      - name: 'Post Infracost comment'  #                                       Comment cost diff. to PR.
+        run: >
+          infracost comment github
+            --path /tmp/infracost.json
+            --repo ${{ github.repository }}
+            --github-token ${{ github.token }}
+            --pull-request ${{ github.event.pull_request.number }}
+            --behavior update
+
+# HOLD ON THIS UNTIL READY FOR CI DEPLOYMENTS =================================
+#  terraform_plan:                                                              # TODO
+#    name: 'Terraform Plan'
+#    if: '${{ github.event_name }} == "pull_request"'
+#    runs-on: 'ubuntu-latest'
+#    needs: ['infracost_update_pr']
+#    defaults:
+#      run:
+#        working-directory: '${{ env.TERRAFORM_DIR }}'
+#    env:
+#       PLANFILE: '/tmp/planfile'
+#    steps:
+#      - name: 'Checkout'
+#        uses: 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683'  # v4.2.2
+#        with:
+#          fetch-depth: 0
+
+#      - name: 'Cache Terraform plan file'
+#        uses: 'actions/cache@6849a6489940f00c2f30c0fb92c6274307ccb58a'  # v4.1.2
+#        with:
+#          path: '${{ env.PLANFILE }}'
+#          key: '${{ env.PLANFILE }}'
+
+#      - name: 'Cache runner public IP'
+#        run: 'echo "IP_ADDR=$(curl https://ipinfo.io/ip)" >> "${GITHUB_ENV}"'
+
+#      - name: 'Log in to AWS CLI'
+#        uses: ''                                                             # TODO
+
+#      - name: 'Set up Terraform'
+#        uses: 'hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd'  # v3.1.2
+#        :ith:
+#          terraform_version: '${{ env.TF_VER }}'
+
+#      - name: 'Initialize Terraform.'
+#        run: 'terraform init'
+
+#      - name: 'Create Terraform plan'
+#        run: 'terraform plan -out ${{ env.PLANFILE }}'
+
+#      - name: 'Comment deployment plan to pull request'
+#        uses: 'borchero/terraform-plan-comment@872735c9f574898bcb14478f8d5503dc2bb6895c'  # v2.0.2
+#        with:
+#          planfile: '${{ env.PLANFILE }}'
+#          token: '${{ github.token }}'
+
+#  terraform_apply:                                                           # TODO
+#    name: 'Terraform Apply'
+#    if: '${{ contains("push,workflow_run", github.event_name) }}'
+#    runs-on: 'ubuntu-latest'
+#    needs: ['terraform_plan']
+#    concurrency:
+#      group: 'production'
+#      cancel-in-progress: true
+#    defaults:
+#      run:
+#        working-directory: '${{ env.TERRAFORM_DIR }}'
+#    env:
+#       PLANFILE: '/tmp/planfile'
+#    steps:
+#      - name: 'Checkout'
+#        uses: 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683'  # v4.2.2
+#        with:
+#            fetch-depth: 0
+
+#      - name: 'Restore cached plan file'
+#        id: 'cache'
+#        uses: 'actions/cache@6849a6489940f00c2f30c0fb92c6274307ccb58a'  # v4.1.2
+#        with:
+#          path: '${{ env.PLANFILE }}'
+#          key: '${{ ${{ env.PLANFILE }}'
+
+#      - name: 'Set up Terraform'
+#        if: '${{ steps.cache.outputs.cache-hit }} == "true"'
+#        uses: 'hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd'  # v3.1.2
+#        with:
+#          terraform_version: '${{ env.TF_VER }}'
+
+#      - name: 'Log in to AWS CLI'
+#        uses: ''                                                             # TODO
+
+#      - name: 'Initialize Terraform'
+#        if: '${{ steps.cache.outputs.cache-hit }} == "true"'
+#        run: 'terraform init'
+
+#      - name: 'Apply Terraform configs'
+#        if: '${{ steps.cache.outputs.cache-hit }} == "true"'
+#        run: 'terraform apply planfile'
+
+#      - name: 'Remove planfile from cache'
+#        uses: ''                                                             # TODO

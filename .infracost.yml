@@ -1,0 +1,14 @@
+---
+version: '0.1'
+projects:
+  - path: &path 'centripedalporch.com'
+    name: *path
+    skip_autodetect: true
+    usage_file: 'centripedalporch.com/.infracost_usage.yml'
+    terraform_var_files: ['production.tfvars']
+
+  - path: &path 'tfstate_backend'
+    name: *path
+    skip_autodetect: true
+    usage_file: 'tfstate_backend/.infracost_usage.yml'
+    terraform_var_files: ['production.tfvars']

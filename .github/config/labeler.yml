@@ -1,0 +1,41 @@
+# Author:       Casey Sparks
+# Date:         November 13, 2024
+# Description:  Config file for the pull request labeler action.
+# Notes:        Read the [docs](https://github.com/actions/labeler) for configuration settings.
+
+---
+bot:
+  - head-branch: ['^dependabot/*']
+ci: &ci
+  - changed-files:
+      - any-glob-to-any-file: ['.github/**']
+codeowners:
+  - changed-files:
+      - any-glob-to-any-file: ['./github/CODEOWNERS']
+docs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.md'
+          - '**/doc/**'
+          - '**/docs/**'
+git:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/.gitignore'
+          - '.git*'
+          - '.gitattributes'
+          - '.gitmodules'
+shell:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.bash'
+          - '**/*.rsc'
+          - '**/*.sh'
+terraform:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.hcl'
+          - '**/*.tf'
+          - '**/*.tftest.hcl'
+          - '**/*.tftest.json'
+          - '**/*.tfvars'

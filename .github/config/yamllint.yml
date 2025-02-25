@@ -1,0 +1,31 @@
+# Author:       Casey Sparks
+# Date:         February 25, 2025
+# Description:  Yamllint configuration for yamllint.yml workflow.
+---
+extends: 'default'
+rules:
+  braces:
+    level: &default_level 'warning'
+    max-spaces-inside: 1
+  brackets:
+    level: *default_level
+    max-spaces-inside: 1
+  colons:
+    level: *default_level
+  commas:
+    level: *default_level
+  comments: 'disable'
+  comments-indentation: 'disable'
+  document-start: 'disable'
+  empty-lines:
+    level: *default_level
+  hyphens:
+    level: *default_level
+  indentation:
+    level: *default_level
+    indent-sequences: 'consistent'
+  line-length:
+    max: 120
+    level: *default_level
+    allow-non-breakable-inline-mappings: true
+  truthy: 'disable'

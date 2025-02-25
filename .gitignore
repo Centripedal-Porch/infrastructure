@@ -6,10 +6,13 @@
 **build*
 
 # Terraform
-**.tfstate
 **.tfstate.*
-**_override.tf
-**_override.tf.json
+**/*.auto.tfvars
+**/*.auto.tfvars.json
+**/*.tfstate
+**/*_override.tf
+**/*_override.tf.json
+**/.infracost/
 **/.terraform
 **/.terraformrc
 **/crash.*.log

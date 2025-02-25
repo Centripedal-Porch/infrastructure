@@ -1,0 +1,20 @@
+# Name:         Version Manifest
+# Author:       Casey Sparks
+# Date:         February 25, 2025
+# Description:  greppable actiions version manifest to pull version hashes into
+#               GitHub Actions for `uses` keys.
+# Usage:        [within Vim/Vi] `:r! grep {ACTION} version.manifest`
+---
+'actions/cache@6849a6489940f00c2f30c0fb92c6274307ccb58a'  # v4.1.2
+'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683'  # v4.2.2
+'actions/labeler@8558fd74291d67161a8a78ce36a881fa63b766a9'  # v5.0.0
+'actionshub/markdownlint@6c82ff529253530dfbf75c37570876c52692835f'  # v3.1.4
+'borchero/terraform-plan-comment@872735c9f574898bcb14478f8d5503dc2bb6895c'  # v2.0.2
+'crazy-max/ghaction-import-gpg@cb9bde2e2525e640591a934b1fd28eef1dcaf5e5'  # v6.2.0
+'hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd'  # v3.1.2
+'infracost/actions/setup@e9d6e6cd65e168e76b0de50ff9957d2fe8bb1832'  # v3.0.1
+'karancode/yamllint-github-action@4052d365f09b8d34eb552c363d1141fd60e2aeb2'  # v3.0.0
+'ludeeus/action-shellcheck@00cae500b08a931fb5698e11e79bfbd38e612a38'  # v2.0.0
+'stefanzweifel/git-auto-commit-action@e348103e9026cc0eee72ae06630dbe30c8bf7a79'  # v5.1.0
+'tj-actions/changed-files@dcc7a0cba800f454d79fff4b993e8c3555bcc0a8'  # v45.0.7
+'webiny/action-conventional-commits@8bc41ff4e7d423d56fa4905f6ff79209a78776c7'  # v1.3.0

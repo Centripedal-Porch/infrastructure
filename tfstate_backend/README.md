@@ -1,20 +1,46 @@
-# www.caseyspar.kz
-This directory contains the configuration for the AWS S3 bucket for all Terraform states I create.
+# tfstate_backend
 
+This directory contains the configuration for CentriPedal Porch's Terraform
+state S3 backend.
 
-## Requirements
-### Softwares
+## Software Requirements
+
 * [AWS](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 * [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 
-
-### Credentials and TF_VARs
-* `$TF_VAR_aws_access_key` [SENSITIVE]
-* `$TF_VAR_aws_secret_key` [SENSITIVE]
-
-
 ## Usage
-1. Ensure that the above environment variables are present and correct in your shell.
-2. Apply the configuration (`terraform apply`).
-3. Un-comment the `backend` config block in `providers.tf`.
-4. Repply the configuration.
+
+### First Apply
+
+1. Ensure that the above softwares are installed and authenticated on your
+   system.
+1. Comment out the `backend` configuration block in `providers.tf`.
+1. Initialize Terraform and apply the configuration:
+
+   ```sh
+   terraform init -backend=false
+   terraform apply
+   ```
+
+1. Un-comment the `backend` config block in `providers.tf`.
+1. Re-initialize terraform.
+
+   ```sh
+   terraform init -migrate-state
+   ```
+
+### Subsequent Applications and Updates
+
+1. Upgrade the Terraform cache:
+
+   ```sh
+   terraform init -upgrade
+   ```
+
+1. Test/plan/apply the new configuration:
+
+   ```sh
+   terraform test
+   terraform plan
+   terraform apply
+   ```
