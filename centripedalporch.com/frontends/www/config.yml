@@ -1,0 +1,7 @@
+# Author:       Casey Sparks
+# Date:         February 25, 2025
+# Description:  Configuration for JAMstack website.
+---
+baseURL: 'https://centripedalporch.com'
+languageCode: 'en-us'
+title: 'CentriPedal Porch'
