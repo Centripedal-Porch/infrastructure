@@ -17,4 +17,11 @@ jobs:
           fetch-depth: 0
 
       - name: 'Run Markdown Lint'
+        uses: 'DavidAnson/markdownlint-cli2-action@05f32210e84442804257b2a6f20b273450ec8265'  # v19.1.0
+        with:
+          config: '.github/config/mdlrc'
+          globs: '**/*.md'
+          continue-on-error: true
+
+      - name: 'Run Markdown Lint'
         uses: 'actionshub/markdownlint@6c82ff529253530dfbf75c37570876c52692835f'  # v3.1.4

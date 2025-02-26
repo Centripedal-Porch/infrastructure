@@ -16,6 +16,7 @@
 'karancode/yamllint-github-action@4052d365f09b8d34eb552c363d1141fd60e2aeb2'  # v3.0.0
 'ludeeus/action-shellcheck@00cae500b08a931fb5698e11e79bfbd38e612a38'  # v2.0.0
 'magikon/github-tag-action@8995b7f2291493e51fb13d3926f25c3d1b5a0d41'  # v5.0.0
+'peaceiris/actions-hugo@75d2e84710de30f6ff7268e08f310b60ef14033f'  # v3.0.0
 'stefanzweifel/git-auto-commit-action@e348103e9026cc0eee72ae06630dbe30c8bf7a79'  # v5.1.0
 'tj-actions/changed-files@dcc7a0cba800f454d79fff4b993e8c3555bcc0a8'  # v45.0.7
 'webiny/action-conventional-commits@8bc41ff4e7d423d56fa4905f6ff79209a78776c7'  # v1.3.0
