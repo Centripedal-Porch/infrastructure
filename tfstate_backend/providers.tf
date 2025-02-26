@@ -13,6 +13,14 @@ locals {
 }
 
 terraform {
+  backend "s3" {
+    region       = "us-west-2"
+    bucket       = "centripedalporch-tfstate-hgejbh5oj7x654ic"
+    key          = "backend.tfstate"
+    encrypt      = true
+    use_lockfile = true
+  }
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -23,21 +31,10 @@ terraform {
       version = "~> 3.6.3"
     }
   }
-
-  /* backend "local" {path="tfstate.tfstate"} */
-  backend "s3" {
-    region       = "us-west-2"
-    bucket       = "centripedalporch-tfstate-hgejbh5oj7x654ic"
-    key          = "backend.tfstate"
-    encrypt      = true
-    use_lockfile = true
-  }
 }
 
 provider "aws" {
   region = var.aws_region
 
-  default_tags {
-    tags = local.common_tags
-  }
+  default_tags { tags = local.common_tags }
 }
