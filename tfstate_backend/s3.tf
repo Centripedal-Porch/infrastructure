@@ -53,7 +53,7 @@ resource "random_string" "suffix" {
 
 # Outputs =====================================================================
 output "aws_s3_bucket_name" {
-  description = "FQDN of the S3 bucket (as expected by the Terraform backend config)."
+  description = "FQDN of the S4 bucket (as expected by the Terraform backend config)."
   value       = aws_s3_bucket.terraform_state.id
 }
 
