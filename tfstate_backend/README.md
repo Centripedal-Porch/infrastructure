@@ -20,14 +20,14 @@ state S3 backend.
 via GitHub Actions CI/CD.
 
 1. _If your manifest changes include provider upgrades, then_ upgrade the
-   Terraform cache: `terraform init -upgrade`
+   Terraform cache: `terraform init --upgrade`
 1. Test the new manifests: `terraform test`
 1. Update values in [.infracost.yml](./.infracost.yml) to align with new
    resource usage and expected load.
 1. Return to the root git directory and cost out the deployment:
    `cd $(git rev-parse --show-toplevel) && infracost breakdown --config-file
    ./.infracost.yml`
-1. Make sure that cloud costs are within range.
+1. Make sure that cloud costs are within an expected/acceptable range.
 1. Commit the new changes to your feature branch **with a useful commit
    message**.
 1. Open a pull request to the `main` branch and wait for codeowner approval.

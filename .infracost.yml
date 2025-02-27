@@ -1,14 +1,14 @@
 ---
 version: '0.1'
 projects:
-  - path: &path 'centripedalporch.com'
-    name: *path
+  - name: &name 'centripedalporch.com'
+    path: *name
     skip_autodetect: true
     usage_file: 'centripedalporch.com/.infracost_usage.yml'
-    terraform_var_files: ['production.tfvars']
+    terraform_var_files: &default_vars ['production.tfvars']
 
-  - path: &path 'tfstate_backend'
-    name: *path
+  - name: &name 'tfstate_backend'
+    path: *name
     skip_autodetect: true
     usage_file: 'tfstate_backend/.infracost_usage.yml'
-    terraform_var_files: ['production.tfvars']
+    terraform_var_files: *default_vars
