@@ -1,15 +1,16 @@
 # Misc. and Best Practice
-**.swp
-**.swo
-**.log
-**.out
-**build*
+**/*.log
+**/*.out
+**/*.swo
+**/*.swp
+**/*build*
 
 # Terraform
-**.tfstate.*
 **/*.auto.tfvars
 **/*.auto.tfvars.json
+**/*.tfplan
 **/*.tfstate
+**/*.tfstate.*
 **/*_override.tf
 **/*_override.tf.json
 **/.infracost/

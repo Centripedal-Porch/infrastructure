@@ -13,34 +13,41 @@ cloud infrastructure.
 
 ## Filesystem Hierarchy
 
-The top-level directory contains three key sub-directories:
+The top-level directory contains two key sub-directories:
 
 * `tfstate_backend/` containing the configuration for the S3 backend.
 * `centripedalporch.com` containing configs for the root domain itself.
 
 ## Secrets Management
 
-All secrets should exist in AWS Secrets Manager and be called by the Terraform
-manifests.
+**Without exception**, all secrets should exist in AWS Secrets Manager and be
+called by the Terraform manifests.
+
+Secrets should be manually update via the AWS CLI, or the AWS console, and
+**not** managed by Terraform.
 
 ## Software
 
-### Required
+## Required
 
+* [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 * [Go](https://go.dev/doc/install)
 * [Hugo](https://gohugo.io/getting-started/quick-start)
-* [Node.js](https://nodejs.org/en/download)
+* [Infracost](https://www.infracost.io/docs)
+* [NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 * [Python 3.10+](https://www.python.org/downloads/release/python-3100)
 * [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 
 ### Recommended
 
-* [GitHub CLI](https://cli.github.com/)
-   * [nektos/act](https://nektosact.com/)
+* [GitHub CLI](https://cli.github.com)
+   * [nektos/act](https://nektosact.com)
+* [cf-terraforming](https://github.com/cloudflare/cf-terraforming)
+* [eslint](https://eslint.org/docs/latest/use/getting-started)
 * [mdl](https://github.com/markdownlint/markdownlint)
-* [yamllint](https://github.com/adrienverge/yamllint)
 * [ruff](https://docs.astral.sh/ruff/installation)
+* [yamllint](https://github.com/adrienverge/yamllint)
 
 ## Setup
 
