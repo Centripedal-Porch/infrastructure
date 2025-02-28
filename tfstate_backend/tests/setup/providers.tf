@@ -8,7 +8,7 @@
 terraform {
   required_providers {
     assert = {
-      source = "hashicorp/assert"
+      source  = "hashicorp/assert"
       version = "~> 0.15.0"
     }
     aws = {
