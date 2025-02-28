@@ -7,7 +7,7 @@
 
 # Resources ===================================================================
 resource "aws_s3_bucket" "terraform_state" {
-  bucket        = "${var.bucket_prefix}-${random_string.suffix.result}"
+  bucket        = "${var.resource_prefix}-${random_string.suffix.result}"
   force_destroy = false
   tags          = { service = "s3" }
 }

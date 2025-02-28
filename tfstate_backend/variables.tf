@@ -14,7 +14,7 @@ variable "aws_region" {
 }
 
 # Misc. =======================================================================
-variable "bucket_prefix" {
+variable "resource_prefix" {
   description = "Name of the AWS bucket to create."
   type        = string
   sensitive   = false

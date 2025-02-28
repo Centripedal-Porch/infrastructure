@@ -9,7 +9,7 @@
 resource "aws_kms_key" "terraform_state" {
   description             = "KMS key for terraform state S3 bucket objects."
   deletion_window_in_days = 30
-  is_enabled = true
+  is_enabled              = true
   tags = merge(
     { service = "kms" },
     local.common_tags
