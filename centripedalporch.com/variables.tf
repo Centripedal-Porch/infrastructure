@@ -11,12 +11,6 @@ variable "aws_region" {
 }
 
 ## Cloudflare =================================================================
-variable "cloudflare_api_token" {
-  type        = string
-  description = "API token for Cloudflare authentication."
-  sensitive   = true
-}
-
 variable "spf_senders" {
   type        = list(string)
   description = "List of allowed SPF senders, like: [\"include:_spf.example.com\", \"ip4:127.0.0.1\"]."
