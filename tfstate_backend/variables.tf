@@ -13,6 +13,13 @@ variable "aws_region" {
   default     = "us-west-2"
 }
 
+variable "aws_terraform_state_iam_group_members" {
+  description = "List of AWS account users who should be able to access Terraform S3 backend/state files."
+  type        = list(string)
+  sensitive   = false
+  default     = ["terraform_admin"]
+}
+
 # Misc. =======================================================================
 variable "resource_prefix" {
   description = "Name of the AWS bucket to create."

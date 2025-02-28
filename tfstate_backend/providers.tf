@@ -5,13 +5,9 @@
 # Date:         February 04, 2025
 # Description:  Terraform/provider/backend state configuration
 
-locals {
-  common_tags = {
-    terraform = true
-    service   = "tfstate"
-  }
-}
+locals {}
 
+# Terraform ===================================================================
 terraform {
   backend "s3" {
     region       = "us-west-2"
@@ -33,8 +29,16 @@ terraform {
   }
 }
 
-provider "aws" {
+# Providers ===================================================================
+provider "aws" { #                                                              AWS
   region = var.aws_region
 
-  default_tags { tags = local.common_tags }
+  default_tags {
+    tags = {
+      terraform = true
+      service   = "tfstate"
+    }
+  }
 }
+
+provider "random" {} #                                                          Random

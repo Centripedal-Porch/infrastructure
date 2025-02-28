@@ -6,6 +6,16 @@
 # Description:  S3 bucket configuration.
 
 # Resources ===================================================================
+## Random ---------------------------------------------------------------------
+resource "random_string" "suffix" {
+  length  = 16
+  lower   = true
+  upper   = false
+  numeric = true
+  special = false
+}
+
+## AWS ------------------------------------------------------------------------
 resource "aws_s3_bucket" "terraform_state" {
   bucket        = "${var.resource_prefix}-${random_string.suffix.result}"
   force_destroy = false
@@ -41,14 +51,6 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" 
       sse_algorithm     = "aws:kms"
     }
   }
-}
-
-resource "random_string" "suffix" {
-  length  = 16
-  lower   = true
-  upper   = false
-  numeric = true
-  special = false
 }
 
 # Outputs =====================================================================
