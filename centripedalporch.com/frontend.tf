@@ -2,6 +2,10 @@
 # Frontend Configuration
 #
 
+locals {
+  subdomain_prefix = "www"
+}
+
 # Data Objects ================================================================
 data "aws_iam_policy_document" "s3_public_read_access" {
   statement {
@@ -11,6 +15,7 @@ data "aws_iam_policy_document" "s3_public_read_access" {
       aws_s3_bucket.carrd_site.arn,
       "${aws_s3_bucket.carrd_site.arn}/*",
     ]
+
     principals {
       type        = "AWS"
       identifiers = ["*"]
@@ -20,19 +25,19 @@ data "aws_iam_policy_document" "s3_public_read_access" {
 
 # Resources ===================================================================
 # Cloudflare ------------------------------------------------------------------
-resource "cloudflare_dns_record" "cname_web_root" {
+resource "cloudflare_dns_record" "cname_redirect_site" {
   zone_id = local.cloudflare_zone_id
   name    = var.root_domain
-  content = aws_s3_bucket_website_configuration.web_root.website_endpoint
+  content = aws_s3_bucket_website_configuration.redirect_site.website_endpoint
   type    = "CNAME"
   ttl     = 1
   proxied = false
   comment = local.cloudflare_comment
 }
 
-resource "cloudflare_dns_record" "cname_www_root" {
+resource "cloudflare_dns_record" "cname_frontend_subdomain" {
   zone_id = local.cloudflare_zone_id
-  name    = "www.${var.root_domain}"
+  name    = "${local.subdomain_prefix}.${var.root_domain}"
   content = aws_s3_bucket_website_configuration.carrd_site.website_endpoint
   type    = "CNAME"
   ttl     = 1
@@ -43,7 +48,7 @@ resource "cloudflare_dns_record" "cname_www_root" {
 # S3 --------------------------------------------------------------------------
 # WWW site --------------------------------------------------------------------
 resource "aws_s3_bucket" "carrd_site" {
-  bucket        = "www.${var.root_domain}"
+  bucket        = "${local.subdomain_prefix}.${var.root_domain}"
   force_destroy = true
   tags          = local.common_tags
 }
@@ -84,14 +89,14 @@ resource "aws_s3_bucket_policy" "carrd_site" {
 }
 
 # Redirect root ---------------------------------------------------------------
-resource "aws_s3_bucket" "web_root" {
+resource "aws_s3_bucket" "redirect_site" {
   bucket        = var.root_domain
   force_destroy = true
   tags          = local.common_tags
 }
 
-resource "aws_s3_bucket_website_configuration" "web_root" {
-  bucket = aws_s3_bucket.web_root.id
+resource "aws_s3_bucket_website_configuration" "redirect_site" {
+  bucket = aws_s3_bucket.redirect_site.id
 
   redirect_all_requests_to { host_name = aws_s3_bucket.carrd_site.id }
 }

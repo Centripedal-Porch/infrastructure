@@ -7,11 +7,14 @@ infrastructure.
 
 * [AWS](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 * [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
-* [Hugo](https://gohugo.io/getting-started/quick-start/)
+* [Hugo](https://gohugo.io/getting-started/quick-start)
+* [Infracost](https://www.infracost.io/docs)
 
-## Usage
+## Setup
 
-### Infrastructure Deployments
+## Website Development
+
+## Deployment
 
 1. Ensure that the above softwares are installed and authenticated on your
    system.
@@ -28,8 +31,6 @@ infrastructure.
    terraform plan
    terraform apply
    ```
-
-### Website Development
 
 ## Recommended Reading
 

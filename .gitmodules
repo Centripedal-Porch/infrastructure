@@ -1,0 +1,4 @@
+[submodule "blist-hugo-theme"]
+	path = centripedalporch.com/frontends/www/themes/blist
+	url = https://github.com/apvarun/blist-hugo-theme.git
+	branch = main
