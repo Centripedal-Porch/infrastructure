@@ -2,3 +2,7 @@
 	path = centripedalporch.com/frontends/www/themes/blist
 	url = https://github.com/apvarun/blist-hugo-theme.git
 	branch = main
+[submodule "centripedalporch.com/frontends/www/themes/blist"]
+	path = centripedalporch.com/frontends/www/themes/blist
+	url = https://github.com/apvarun/blist-hugo-theme
+	branch = main
