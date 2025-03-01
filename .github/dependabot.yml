@@ -1,18 +1,19 @@
 ---
 version: 2
 updates:
-  - package-ecosystem: 'gitsubmodule'                                           # git submodule
-    directory: '.'
-    rebase-strategy: 'auto'
-    reviewers: ['caseysparkz']
-    target-branch: 'main'
-    schedule:
-      interval: 'weekly'
-      day: 'friday'
-      time: '18:30'
-      timezone: 'America/Los_Angeles'
-    commit-message:
-      prefix: 'chore(gitsubmodule)'
+  # Uncomment when hugo_frontend reaches main.
+  # package-ecosystem: 'gitsubmodule'                                           # git submodule
+  # directory: '.'
+  # rebase-strategy: 'auto'
+  # reviewers: ['caseysparkz']
+  # target-branch: 'main'
+  # schedule:
+  #   interval: 'weekly'
+  #   day: 'friday'
+  #   time: '18:30'
+  #   timezone: 'America/Los_Angeles'
+  # commit-message:
+  #   prefix: 'chore(gitsubmodule)'
 
   - package-ecosystem: 'github-actions'                                         # github-actions
     directory: '.github/workflows'
@@ -28,10 +29,13 @@ updates:
       prefix: 'chore(github_actions)'
 
   - package-ecosystem: 'terraform'                                              # terraform
-    directory: '.'
     rebase-strategy: 'auto'
     reviewers: ['caseysparkz']
     target-branch: 'main'
+    directories: [
+      'tfstate_backend',
+      'centripedalporch.com',
+    ]
     schedule:
       interval: 'weekly'
       day: 'friday'
