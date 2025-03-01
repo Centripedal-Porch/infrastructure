@@ -95,16 +95,3 @@ resource "aws_s3_bucket_website_configuration" "web_root" {
 
   redirect_all_requests_to { host_name = aws_s3_bucket.carrd_site.id }
 }
-
-# Outputs =====================================================================
-output "aws_s3_bucket_endpoint" {
-  description = "Bucket endpoint"
-  value       = aws_s3_bucket_website_configuration.carrd_site.website_endpoint
-  sensitive   = false
-}
-
-output "aws_s3_bucket_id" {
-  description = "ID of the S3 bucket (as expected by the AWS CLI)."
-  value       = aws_s3_bucket.carrd_site.id
-  sensitive   = false
-}

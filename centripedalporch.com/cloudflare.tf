@@ -58,9 +58,3 @@ resource "cloudflare_dns_record" "txt" { #                                      
   proxied  = false
   comment  = local.cloudflare_comment
 }
-
-## Outputs ====================================================================
-output "cloudflare_zone_name" {
-  description = "Zone data for the root Cloudflare DNS zone."
-  value       = data.cloudflare_zones.root_domain.result[0]
-}

@@ -47,13 +47,12 @@ provider "aws" { #                                                              
 
 provider "cloudflare" { #                                                       Cloudflare
   api_token = data.aws_secretsmanager_secret_version.cloudflare_token.secret_string
-  #api_token = var.cloudflare_api_token
 }
 
 ## Data =======================================================================
 data "aws_caller_identity" "current" {}
 
-data "aws_secretsmanager_secret" "cloudflare_token" {
+data "aws_secretsmanager_secret" "cloudflare_token" { #                         Cloudflare API token
   arn = "arn:aws:secretsmanager:${var.aws_region}:${local.aws_account_id}:secret:cloudflare/api_token"
 }
 
