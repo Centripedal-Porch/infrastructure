@@ -16,15 +16,22 @@ cloud infrastructure.
 The top-level directory contains two key sub-directories:
 
 * `tfstate_backend/` containing the configuration for the S3 backend.
-* `centripedalporch.com` containing configs for the root domain itself.
+* `centripedalporch.com/` containing configs for the root domain itself.
 
 ## Secrets Management
 
 **Without exception**, all secrets should exist in AWS Secrets Manager and be
 called by the Terraform manifests.
 
-Secrets should be manually update via the AWS CLI, or the AWS console, and
+Secrets should be manually updated via the AWS CLI, or the AWS console, and
 **not** managed by Terraform.
+
+Non-secret variables should exist in a configuration file matching the
+environment. Eg:
+
+* `production.tfvars` for the production environment.
+* `staging.tfvars` for the staging environment.
+* Etc.
 
 ## Software
 
