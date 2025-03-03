@@ -1,0 +1,73 @@
+---
+title: 'CentriPedal Porch'
+baseurl: 'https://demo.centripedalporch.com'
+theme: 'blist'
+DefaultContentLanguage: 'en'
+DefaultContentLanguageInSubdir: false
+contentDir: 'content'
+metaDataFormat: 'yaml'
+build:
+  writeStats: true
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    style: 'dracula'
+menu:
+  main:
+    - name: 'Blog'
+      url: 'blog'
+      weight: 1
+    - name: 'Tags'
+      url: 'tags'
+      weight: 3
+    - name: 'About'
+      url: 'about/'
+      weight: 90
+    - name: 'Contact'
+      url: 'contact'
+      weight: 99
+outputs:
+  home:
+    - 'HTML'
+    - 'JSON'
+    - 'RSS'
+params:
+  introTitle: "Hi! We're CentriPedal Porch."
+  introSubtitle: 'A Burning Man theme camp'
+  frontBundle: 'blog'                                                         # Homepage style
+  toc: false                                                                  # No table of contents
+  ascentColor: 'bg-blue-100'
+  introPhoto: '/picture.jpg'
+  logo: 'static/centripedal-logo.png'
+  copyright: "CentriPedal Porch | All rights reserved"                        # At footer
+  darkModeToggle: true                                                        # Allow toggle dark mode
+  enableSearch: true
+  favicon: '/favicon.svg'
+  hideMeta: true                                                              # Hides date, read time, word count, etc.
+  hideOtherLanguages: true
+  hidePageThumbnail: false
+  comments: {}                                                                # Disable comment section
+  homepage:
+    social:
+      title: 'Follow Us'
+      description: '(or else)'
+      icons:
+        - url: 'https://instagram.com/CentriPedal-Porch'                        # Instagram
+          website: 'instagram'
+        - url: 'https://github.com/CentriPedal-Porch'                           # GitHub
+          website: 'github'
+        - url: 'contact@centripedalporch.com'                                   # Email
+          website: 'email'
+      # - url: 'https://reddit.com/'
+      #   website: 'reddit'
+      # - url: 'https://facebook.com'
+      #   website: 'facebook'
+  searchKeys:
+    - 'categories'
+    - 'content'
+    - 'date'
+    - 'link'
+    - 'summary'
+    - 'tags'

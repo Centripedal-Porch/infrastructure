@@ -26,7 +26,7 @@ infrastructure.
    ```sh
    terraform test
    terraform plan
-   terraform apply
+   terraform apply --var-file=production.tfvars
    ```
 
 ### Website Development
