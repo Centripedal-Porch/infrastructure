@@ -21,7 +21,6 @@ jobs:
         with:
           config: '.github/config/mdlrc'
           globs: '**/*.md'
-          continue-on-error: true
 
       - name: 'Run Markdown Lint'
         uses: 'actionshub/markdownlint@6c82ff529253530dfbf75c37570876c52692835f'  # v3.1.4
