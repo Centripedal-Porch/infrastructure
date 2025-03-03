@@ -1,6 +1,6 @@
 # CentriPedal-Porch/infrastructure
 
-**Contents**
+## Contents
 
 1. [Top-level Repository README](./README.md)
 1. [tfstate_backend Infrastructure README](./tfstate_backend/README.md)
@@ -42,10 +42,10 @@ Secrets should be manually update via the AWS CLI, or the AWS console, and
 ### Recommended
 
 * [GitHub CLI](https://cli.github.com)
-   * [nektos/act](https://nektosact.com)
 * [cf-terraforming](https://github.com/cloudflare/cf-terraforming)
 * [eslint](https://eslint.org/docs/latest/use/getting-started)
 * [mdl](https://github.com/markdownlint/markdownlint)
+* [nektos/act](https://nektosact.com)
 * [ruff](https://docs.astral.sh/ruff/installation)
 * [yamllint](https://github.com/adrienverge/yamllint)
 
