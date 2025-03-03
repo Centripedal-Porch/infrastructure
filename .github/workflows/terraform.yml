@@ -20,7 +20,7 @@ on:
 env:
   HUGO_CACHE_DIR: '/tmp/hugo_cache'
   HUGO_VER: '0.143.1'
-  TERRAFORM_DIR: './centripedalporch.com'
+  TERRAFORM_DIR: 'centripedalporch.com'
   TERRAFORM_PLANFILE: '/tmp/terraform_planfile'
   TF_LOG: 'trace'
   TF_LOG_path: '/tmp/terraform.log'

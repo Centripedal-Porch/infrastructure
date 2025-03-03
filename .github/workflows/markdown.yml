@@ -19,7 +19,7 @@ jobs:
       - name: 'Run Markdown Lint'
         uses: 'DavidAnson/markdownlint-cli2-action@05f32210e84442804257b2a6f20b273450ec8265'  # v19.1.0
         with:
-          config: '.github/config/mdlrc'
+          config: '.github/config/mdlrc.jsonc'
           globs: '**/*.md'
 
       - name: 'Run Markdown Lint'
