@@ -13,11 +13,11 @@ terraform {
     }
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.8.0"
+      version = "~> 5.89.0"
     }
     random = {
       source  = "hashicorp/random"
-      version = "~> 3.6.3"
+      version = "~> 3.7.1"
     }
   }
 }
