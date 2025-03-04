@@ -13,6 +13,14 @@ locals {
 terraform {
   required_version = "~> 1.6"
 
+  backend "s3" {
+    region       = "us-west-2"
+    bucket       = "centripedalporch-tfstate-hgejbh5oj7x654ic"
+    key          = "centripedalporch.com.tfstate"
+    encrypt      = true
+    use_lockfile = true
+  }
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -22,14 +30,10 @@ terraform {
       source  = "cloudflare/cloudflare"
       version = "~> 5.1.0"
     }
-  }
-
-  backend "s3" {
-    region       = "us-west-2"
-    bucket       = "centripedalporch-tfstate-hgejbh5oj7x654ic"
-    key          = "centripedalporch.com.tfstate"
-    encrypt      = true
-    use_lockfile = true
+    github = {
+      source  = "integrations/github"
+      version = "6.6.0"
+    }
   }
 }
 
@@ -49,6 +53,11 @@ provider "cloudflare" { #                                                       
   api_token = data.aws_secretsmanager_secret_version.cloudflare_token.secret_string
 }
 
+provider "github" { #                                                           Github
+  owner = local.github_org_name
+  token = data.aws_secretsmanager_secret_version.github_token.secret_string
+}
+
 ## Data =======================================================================
 data "aws_caller_identity" "current" {}
 
@@ -58,6 +67,14 @@ data "aws_secretsmanager_secret" "cloudflare_token" { #                         
 
 data "aws_secretsmanager_secret_version" "cloudflare_token" {
   secret_id = data.aws_secretsmanager_secret.cloudflare_token.id
+}
+
+data "aws_secretsmanager_secret" "github_token" { #                             Github token
+  arn = "arn:aws:secretsmanager:${var.aws_region}:${local.aws_account_id}:secret:github/api_token"
+}
+
+data "aws_secretsmanager_secret_version" "github_token" {
+  secret_id = data.aws_secretsmanager_secret.github_token.id
 }
 
 ## Outputs ====================================================================

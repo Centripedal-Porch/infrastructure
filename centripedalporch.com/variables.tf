@@ -25,6 +25,13 @@ variable "txt_records" {
   default     = {}
 }
 
+## GitHub =====================================================================
+variable "github_repositories" {
+  description = "Map of GitHub repositories and their (non-default) settings."
+  type        = map(map(string))
+  sensitive   = false
+}
+
 ## Misc. ======================================================================
 variable "root_domain" {
   type        = string
