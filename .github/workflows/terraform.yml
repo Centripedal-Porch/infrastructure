@@ -111,7 +111,7 @@ jobs:
 
       - name: 'Get changed files'
         id: 'changed_files'
-        uses: 'tj-actions/changed-files@666c9d29007687c52e3c7aa2aac6c0ffcadeadc3'
+        uses: 'tj-actions/changed-files@5f66af5912c4f9c360c03a612f98606fb0f83790'
 
       - name: 'Nag user to update Infracost usage file.'
         if: "${{ !contains(join(steps.changed_files.outputs.all_changed_files, ','), '.infracost_usage.yml') }}"
